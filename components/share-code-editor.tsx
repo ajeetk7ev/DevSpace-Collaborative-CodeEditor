@@ -26,7 +26,7 @@ export function ShareCodeEditor({ room, user }: { room: string; user: string }) 
 
   // Initialize WebSocket
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket(process.env.NEXT_PUBLIC_WS_URL!);
     wsref.current = ws;
 
     ws.onopen = () => {
