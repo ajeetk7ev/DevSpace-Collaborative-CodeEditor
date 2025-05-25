@@ -5,28 +5,10 @@ import { ShareNavbar } from "./header/share-navbar";
 import { Button } from "./ui/button";
 import axios from "axios";
 import Split from "react-split";
+import { languages } from "@/utils/data";
+import { defaultCodes } from "@/utils/data";
+import { languageMap } from "@/utils/data";
 
-const languages = ["javascript", "typescript", "python", "cpp", "c", "java", "go"];
-
-const defaultCodes: Record<string, string> = {
-  javascript: `// JavaScript Boilerplate\nconsole.log("Hello, JavaScript!");`,
-  typescript: `// TypeScript Boilerplate\nconst greet = (name: string): void => {\n  console.log("Hello, " + name);\n};\ngreet("TypeScript");`,
-  python: `# Python Boilerplate\ndef greet(name):\n    print("Hello,", name)\n\ngreet("Python")`,
-  cpp: `// C++ Boilerplate\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, C++!" << endl;\n    return 0;\n}`,
-  c: `// C Boilerplate\n#include <stdio.h>\n\nint main() {\n    printf("Hello, C!\\n");\n    return 0;\n}`,
-  java: `// Java Boilerplate\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java!");\n    }\n}`,
-  go: `// Go Boilerplate\npackage main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, Go!")\n}`,
-};
-
-const languageMap: Record<string, number> = {
-  javascript: 63,
-  typescript: 74,
-  python: 71,
-  cpp: 54,
-  c: 50,
-  java: 62,
-  go: 60,
-};
 
 export function ShareCodeEditor({ room, user }: { room: string; user: string }) {
   const [curLanguage, setCurLanguage] = useState("javascript");
@@ -44,7 +26,7 @@ export function ShareCodeEditor({ room, user }: { room: string; user: string }) 
 
   // Initialize WebSocket
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8080"); // NOTE: use ws:// not http://
+    const ws = new WebSocket("ws://localhost:8080");
     wsref.current = ws;
 
     ws.onopen = () => {
@@ -85,7 +67,7 @@ export function ShareCodeEditor({ room, user }: { room: string; user: string }) 
 
     setCode(value);
 
-    // Prevent echo
+   
     if (ignoreIncomingRef.current) {
       ignoreIncomingRef.current = false;
       return;

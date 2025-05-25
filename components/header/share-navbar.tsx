@@ -17,10 +17,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { editorThemes } from "@/utils/data";
+import { fontSizes } from "@/utils/data";
 
 
 type NavbarProps = {
-    languages: string[];
+  languages: string[];
   curLanguage: string;
   loading: boolean;
   setCurLanguage: (lang: string) => void;
@@ -30,8 +32,7 @@ type NavbarProps = {
   editorTheme: string;
 };
 
-const editorThemes = ["vs-dark", "light"];
-const fontSizes = ["12", "14", "16", "18", "20", "24"];
+
 
 export function ShareNavbar({  languages,
   setCurLanguage,

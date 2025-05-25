@@ -6,7 +6,6 @@ const RAPIDAPI_HOST = "judge0-ce.p.rapidapi.com";
 
 export async function POST(req: NextRequest) {
   const { source_code, language_id, stdin } = await req.json();
-  console.log("API IS CALLING");
 
   try {
     const response = await axios.post(

@@ -20,6 +20,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { editorThemes } from "@/utils/data";
+import { fontSizes } from "@/utils/data";
+
 type NavbarProps = {
   languages: string[];
   curLanguage: string;
@@ -31,8 +34,7 @@ type NavbarProps = {
   editorTheme: string;
 };
 
-const editorThemes = ["vs-dark", "light"];
-const fontSizes = ["12", "14", "16", "18", "20", "24"];
+
 
 export function Navbar({
   languages,
@@ -84,7 +86,7 @@ export function Navbar({
           </Select>
 
           {/* Editor Settings */}
-          <Dialog>
+           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <Settings size={16} />
