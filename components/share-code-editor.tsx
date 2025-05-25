@@ -145,55 +145,6 @@ export function ShareCodeEditor({ room, user }: { room: string; user: string }) 
         setFontSize={setFontSize}
         editorTheme={editorTheme}
       />
-     {/* <div className="flex">
-        <Editor
-          height="95vh"
-          width="75vw"
-          theme={editorTheme}
-          language={curLanguage}
-          value={code}
-          onChange={handleCodeChange}
-          options={{
-           fontSize:parseInt(fontSize),
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            lineNumbers: "on",
-          }}
-        />
-        <div className="w-[25vw] bg-gray-800 text-white p-4 space-y-4 overflow-y-auto">
-          <h2 className="text-xl font-semibold">Input (stdin)</h2>
-          <textarea
-            value={stdin}
-            onChange={(e) => setStdin(e.target.value)}
-            className="w-full h-28 p-2 text-black rounded bg-gray-100"
-            placeholder="Enter input if required"
-          />
-
-          <div className="flex justify-between">
-            <Button
-              className="bg-red-600 hover:bg-red-700"
-              onClick={() => {
-                setOutput("");
-                setTime("");
-                setMemory("");
-              }}
-            >
-              Clear
-            </Button>
-            {loading && <span className="text-green-300">Running...</span>}
-          </div>
-
-          <h2 className="text-xl font-semibold pt-2">Output</h2>
-          <pre className="bg-black min-h-40 p-2 rounded overflow-auto">{output}</pre>
-
-          {time && (
-            <div className="text-sm mt-2">
-              <p>Execution Time: {time}</p>
-              <p>Memory Used: {memory}</p>
-            </div>
-          )}
-        </div>
-      </div> */}
 
        <Split
         className="flex h-[95vh]"
