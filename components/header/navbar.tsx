@@ -10,31 +10,54 @@ import {
   SelectValue,
 } from "../ui/select";
 import { JoinRoom } from "./join-room";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings } from "lucide-react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type NavbarProps = {
   languages: string[];
   curLanguage: string;
-  loading:boolean
+  loading: boolean;
   setCurLanguage: (lang: string) => void;
-  onRunCode: () => void; // added prop
+  setEditorTheme: (theme: string) => void;
+  setFontSize: (size: string) => void;
+  onRunCode: () => void;
+  editorTheme: string;
 };
 
-export function Navbar({ languages, setCurLanguage, curLanguage, onRunCode, loading }: NavbarProps) {
+const editorThemes = ["vs-dark", "light"];
+const fontSizes = ["12", "14", "16", "18", "20", "24"];
+
+export function Navbar({
+  languages,
+  setCurLanguage,
+  curLanguage,
+  onRunCode,
+  loading,
+  setEditorTheme,
+  setFontSize,
+  editorTheme,
+}: NavbarProps) {
   return (
     <header className="w-full h-[60px] bg-slate-900 flex items-center justify-center border-b-2 border-b-slate-800">
       <div className="w-[85%] mx-auto flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-white">DevSpace</h1>
 
         <div className="flex items-center gap-2">
-           <Button
+          <Button
             onClick={onRunCode}
-            className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
+            className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-white"
             disabled={loading}
           >
             {loading ? (
               <>
-                <Loader2  className="animate-spin text-white" size={16} />
+                <Loader2 className="animate-spin text-white" size={16} />
               </>
             ) : (
               <>
@@ -44,7 +67,7 @@ export function Navbar({ languages, setCurLanguage, curLanguage, onRunCode, load
             )}
           </Button>
 
-          <Select value={curLanguage} onValueChange={(val) => setCurLanguage(val)}>
+          <Select value={curLanguage} onValueChange={setCurLanguage}>
             <SelectTrigger className="w-[200px] border text-white border-gray-300 rounded-xl px-4 py-2">
               <SelectValue placeholder="Choose language" />
             </SelectTrigger>
@@ -59,6 +82,64 @@ export function Navbar({ languages, setCurLanguage, curLanguage, onRunCode, load
               </SelectGroup>
             </SelectContent>
           </Select>
+
+          {/* Editor Settings */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Settings size={16} />
+                Settings
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Editor Settings</DialogTitle>
+              </DialogHeader>
+
+              <div className="space-y-6 pt-4">
+                {/* Theme Selection */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Editor Theme</p>
+                  <Select value={editorTheme} onValueChange={setEditorTheme}>
+                    <SelectTrigger className="w-full border text-black border-gray-300 rounded-md px-4 py-2">
+                      <SelectValue placeholder="Select theme" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-md border border-gray-200 shadow-md bg-white">
+                      <SelectGroup>
+                        <SelectLabel className="text-gray-500 px-2 py-1">Themes</SelectLabel>
+                        {editorThemes.map((theme) => (
+                          <SelectItem key={theme} value={theme}>
+                            {theme}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Font Size Selection */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Editor Font Size</p>
+                  <Select onValueChange={setFontSize} defaultValue="14">
+                    <SelectTrigger className="w-full border text-black border-gray-300 rounded-md px-4 py-2">
+                      <SelectValue placeholder="Select font size" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-md border border-gray-200 shadow-md bg-white">
+                      <SelectGroup>
+                        <SelectLabel className="text-gray-500 px-2 py-1">Font Size</SelectLabel>
+                        {fontSizes.map((size) => (
+                          <SelectItem key={size} value={size}>
+                            {size}px
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+            </DialogContent>
+          </Dialog>
         </div>
 
         <JoinRoom />
