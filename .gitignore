@@ -1,14 +1,53 @@
+<<<<<<< HEAD
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
 /.pnp
+=======
+# client (Next.js)
+client/node_modules/
+client/.next/
+client/out/
+client/build/
+client/.env*
+client/.env.local
+client/.DS_Store
+client/coverage/
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/.vercel
+client/.tsbuildinfo
+client/next-env.d.ts
+
+# ws-server (Node.js / Express / WebSocket server)
+ws-server/node_modules/
+ws-server/dist/
+ws-server/.env*
+ws-server/.DS_Store
+ws-server/npm-debug.log*
+ws-server/yarn-debug.log*
+ws-server/yarn-error.log*
+
+# shared
+.DS_Store
+*.pem
+*.log
+logs/
+*.sqlite
+*.db
+*.tsbuildinfo
+
+# yarn / pnpm
+>>>>>>> 3ecb665 (updated code)
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+<<<<<<< HEAD
 
 # testing
 /coverage
@@ -44,3 +83,10 @@ next-env.d.ts
 
 /ws-server/node_modules
 /ws-server/dist
+=======
+.pnpm-debug.log*
+
+# prisma (if used)
+**/prisma/migrations/
+**/lib/generated/prisma
+>>>>>>> 3ecb665 (updated code)

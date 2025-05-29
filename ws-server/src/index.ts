@@ -35,10 +35,12 @@ wss.on('connection', (ws) => {
 
         console.log(`User "${user}" joined room "${room}"`);
 
+        ws.send(JSON.stringify({type:'user-joined',payload:{user,totalUsers: rooms.get(room)?.size}}));
+
         // Notify others
         broadcastToRoom(room, {
           type: "user-joined",
-          payload: { user }
+          payload: { user, totalUsers: rooms.get(room)?.size || 0 }
         }, ws);
 
         break;
@@ -71,7 +73,7 @@ wss.on('connection', (ws) => {
           // Notify others
           broadcastToRoom(currentRoom, {
             type: "user-left",
-            payload: { user: item.user }
+            payload: { user: item.user, totalUsers: userSet.size }
           }, ws);
 
           break;
