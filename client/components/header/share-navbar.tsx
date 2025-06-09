@@ -31,6 +31,7 @@ import { editorThemes, fontSizes } from "@/utils/data";
 import { UserProfile } from "./user-profile";
 import { SignOutButton } from "@clerk/nextjs";
 import { Separator } from "@radix-ui/react-select";
+import { AI } from "../ai";
 
 type NavbarProps = {
   languages: string[];
@@ -77,6 +78,8 @@ export function ShareNavbar({
               </>
             )}
           </Button>
+
+          <AI/>
 
           {/* Language Selector */}
           <Select value={curLanguage} onValueChange={setCurLanguage}>
@@ -183,6 +186,8 @@ export function ShareNavbar({
                     </>
                   )}
                 </Button>
+
+                <AI/>
 
                 <Select value={curLanguage} onValueChange={setCurLanguage}>
                   <SelectTrigger className="w-full border text-black">

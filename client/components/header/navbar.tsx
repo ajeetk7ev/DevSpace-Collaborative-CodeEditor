@@ -18,6 +18,7 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
+
 import { JoinRoom } from "./join-room";
 import { Loader2, Menu, Settings } from "lucide-react";
 
@@ -32,8 +33,10 @@ import {
 import { editorThemes } from "@/utils/data";
 import { fontSizes } from "@/utils/data";
 import { UserProfile } from "./user-profile";
-import { SaveUploadFile } from "./save-upload-file";
 import { SignOutButton } from "@clerk/nextjs";
+import { AI } from "../ai";
+
+
 
 
 type NavbarProps = {
@@ -49,6 +52,8 @@ type NavbarProps = {
 
 
 
+
+
 export function Navbar({
   languages,
   setCurLanguage,
@@ -59,7 +64,10 @@ export function Navbar({
   setFontSize,
   editorTheme,
 }: NavbarProps) {
+
  
+
+
   return (
     <header className="w-full h-[60px] bg-slate-900 flex items-center justify-center border-b-2 border-b-slate-800">
       <div className="w-[90%] mx-auto flex items-center justify-between">
@@ -82,6 +90,10 @@ export function Navbar({
               </>
             )}
           </Button>
+
+        {/* Ai Support */}
+        <AI/>
+
 
           {/* Language Selector */}
           <Select value={curLanguage} onValueChange={setCurLanguage}>
@@ -158,9 +170,9 @@ export function Navbar({
 
         {/* Mobile Menu (Sheet) */}
         <div className="md:hidden flex items-center gap-2">
-         
-           <JoinRoom/>
-          
+
+          <JoinRoom />
+
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="ghost">
@@ -188,6 +200,8 @@ export function Navbar({
                     </>
                   )}
                 </Button>
+
+                <AI/>
 
                 <Select value={curLanguage} onValueChange={setCurLanguage}>
                   <SelectTrigger className="w-full border text-black">
@@ -257,7 +271,7 @@ export function Navbar({
 
         {/* Right Section */}
         <div className="hidden md:flex items-center gap-4">
-          <JoinRoom/>
+          <JoinRoom />
           <UserProfile />
         </div>
       </div>
