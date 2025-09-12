@@ -35,7 +35,7 @@ wss.on('connection', (ws) => {
 
         console.log(`User "${user}" joined room "${room}"`);
 
-        ws.send(JSON.stringify({type:'user-joined',payload:{user,totalUsers: rooms.get(room)?.size}}));
+        ws.send(JSON.stringify({ type: 'user-joined', payload: { user, totalUsers: rooms.get(room)?.size } }));
 
         // Notify others
         broadcastToRoom(room, {
@@ -54,6 +54,31 @@ wss.on('connection', (ws) => {
           payload: { code }
         }, ws);
 
+        break;
+      }
+
+      case "leave": {
+        const { room, user } = data.payload;
+
+        const userSet = rooms.get(room);
+        if (userSet) {
+          for (const item of userSet) {
+            if (item.socket === ws) {
+              userSet.delete(item);
+
+              broadcastToRoom(room, {
+                type: "user-left",
+                payload: { user, totalUsers: userSet.size },
+              }, ws);
+              break;
+            }
+          }
+          if (userSet.size === 0) {
+            rooms.delete(room);
+          }
+        }
+
+        ws.close();
         break;
       }
 

@@ -175,7 +175,7 @@ export function Navbar({
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon" variant="ghost">
+              <Button size="icon" className="bg-gray-700 rounded-full hover:bg-gray-800">
                 <Menu className="text-white" />
               </Button>
             </SheetTrigger>

@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Loader2, Settings, Menu } from "lucide-react";
+import { Loader2, Settings, Menu, LogOut } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -30,7 +30,6 @@ import {
 import { editorThemes, fontSizes } from "@/utils/data";
 import { UserProfile } from "./user-profile";
 import { SignOutButton } from "@clerk/nextjs";
-import { Separator } from "@radix-ui/react-select";
 import { AI } from "../ai";
 
 type NavbarProps = {
@@ -41,6 +40,7 @@ type NavbarProps = {
   setEditorTheme: (theme: string) => void;
   setFontSize: (size: string) => void;
   onRunCode: () => void;
+  onLeaveRoom: () => void;
   editorTheme: string;
   totalUsersInRoom: number;
 };
@@ -55,6 +55,7 @@ export function ShareNavbar({
   setFontSize,
   editorTheme,
   totalUsersInRoom,
+  onLeaveRoom
 }: NavbarProps) {
   return (
     <header className="w-full h-[60px] bg-slate-900 flex items-center justify-center border-b-2 border-b-slate-800">
@@ -79,7 +80,9 @@ export function ShareNavbar({
             )}
           </Button>
 
-          <AI/>
+          <AI />
+
+          
 
           {/* Language Selector */}
           <Select value={curLanguage} onValueChange={setCurLanguage}>
@@ -157,11 +160,20 @@ export function ShareNavbar({
         {/* Mobile Menu (Sheet) */}
         <div className="md:hidden flex items-center gap-2">
           <span className="bg-green-500 text-white text-xs sm:text-sm font-semibold px-3 py-1 rounded-full shadow">
-           {totalUsersInRoom} Online
+            {totalUsersInRoom} Online
           </span>
+          {/* Leave Button */}
+          <Button
+             onClick={onLeaveRoom}
+            className="bg-red-600 hover:bg-red-700 flex items-center gap-2"
+
+          >
+            <LogOut size={16} />
+            Leave
+          </Button>
           <Sheet>
             <SheetTrigger asChild>
-              <Button size="icon" variant="ghost">
+              <Button size="icon" className="bg-gray-700 rounded-full hover:bg-gray-800">
                 <Menu className="text-white" />
               </Button>
             </SheetTrigger>
@@ -187,7 +199,7 @@ export function ShareNavbar({
                   )}
                 </Button>
 
-                <AI/>
+                <AI />
 
                 <Select value={curLanguage} onValueChange={setCurLanguage}>
                   <SelectTrigger className="w-full border text-black">
@@ -260,6 +272,15 @@ export function ShareNavbar({
           <span className="bg-green-500 text-white text-xs sm:text-sm font-semibold px-3 py-1 rounded-full shadow">
             {totalUsersInRoom} Online
           </span>
+          {/* Leave Button */}
+          <Button
+             onClick={onLeaveRoom}
+            className="bg-red-600 hover:bg-red-700 flex items-center gap-2"
+
+          >
+            <LogOut size={16} />
+            Leave
+          </Button>
           <UserProfile />
         </div>
       </div>

@@ -106,9 +106,6 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
   }, [curLanguage]);
 
  
-
-
-
   const runCode = async () => {
     setLoading(true);
     setOutput("");
@@ -133,6 +130,22 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
     }
   };
 
+  const handleLeaveRoom = () => {
+  if (wsref.current && wsref.current.readyState === WebSocket.OPEN) {
+    wsref.current.send(
+      JSON.stringify({
+        type: "leave",
+        payload: { room, user },
+      })
+    );
+    wsref.current.close();
+  }
+
+  toast.success("You left the room");
+  // redirect if needed
+  window.location.href = "/"; // or dashboard
+};
+
   return (
     <div className="h-screen w-screen">
       <ShareNavbar
@@ -145,6 +158,7 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
         setFontSize={setFontSize}
         editorTheme={editorTheme}
         totalUsersInRoom={totalUsersInRoom}
+        onLeaveRoom={handleLeaveRoom}
       />
 
       <Split
