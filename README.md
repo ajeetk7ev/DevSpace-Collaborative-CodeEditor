@@ -12,7 +12,7 @@
 
 **A powerful, full-stack real-time collaborative code editor built with modern web technologies**
 
-[🌐 Live Demo](https://dev-space-collaborative-code-editor-seven.vercel.app/dashboard/code-editor) • [📖 Documentation](https://your-docs-url.com) • [🐛 Report Bug](https://github.com/ajeetk7ev/DevSpace-Collaborative-CodeEditor/issues) • [✨ Request Feature](https://github.com/ajeetk7ev/DevSpace-Collaborative-CodeEditor/issues)
+[🌐 Live Demo](https://dev-space-collaborative-code-editor-eight.vercel.app/dashboard/code-editor) • [📖 Documentation](https://your-docs-url.com) • [🐛 Report Bug](https://github.com/ajeetk7ev/DevSpace-Collaborative-CodeEditor/issues) • [✨ Request Feature](https://github.com/ajeetk7ev/DevSpace-Collaborative-CodeEditor/issues)
 
 </div>
 
