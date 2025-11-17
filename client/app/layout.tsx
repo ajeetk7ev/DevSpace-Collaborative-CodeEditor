@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import {
-  ClerkProvider,
-} from '@clerk/nextjs'
-import { Toaster } from 'react-hot-toast';
-
+import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,11 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "DevSpace – Collaborative Code Editor",
-  description:  "DevSpace is a real-time collaborative code editor with multi-language support, input/output execution, and room-based sharing.",
-  icons:{
-    icon:'/favicon.png',
-    shortcut:'/favicon.png'
-  }
+  description:
+    "DevSpace is a real-time collaborative code editor with multi-language support, input/output execution, and room-based sharing.",
+  icons: {
+    icon: "favicon.ico",
+    shortcut: "favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -32,21 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
- 
- <ClerkProvider
- clerkJSUrl="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-
- >
-  
-     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster/>
-        {children}
-      </body>
-    </html>
- </ClerkProvider>
-   
+    <ClerkProvider clerkJSUrl="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js">
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Toaster />
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

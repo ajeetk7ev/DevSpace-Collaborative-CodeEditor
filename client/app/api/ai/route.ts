@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export async function POST(req: NextRequest) {
-  try {
+  try {``
     const { prompt } = await req.json();
 
     if (!prompt || typeof prompt !== 'string') {

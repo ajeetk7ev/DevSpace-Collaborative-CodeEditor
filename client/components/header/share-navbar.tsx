@@ -31,6 +31,8 @@ import { editorThemes, fontSizes } from "@/utils/data";
 import { UserProfile } from "./user-profile";
 import { SignOutButton } from "@clerk/nextjs";
 import { AI } from "../ai";
+import Image from "next/image";
+import devspaceLogo from '@/public/devspace-logo.png'
 
 type NavbarProps = {
   languages: string[];
@@ -61,7 +63,10 @@ export function ShareNavbar({
     <header className="w-full h-[60px] bg-slate-900 flex items-center justify-center border-b-2 border-b-slate-800">
       <div className="w-[90%] mx-auto flex items-center justify-between">
         {/* Logo */}
-        <h1 className="text-xl sm:text-2xl font-semibold text-white">DevSpace</h1>
+       <div className="flex items-center">
+         <Image src={devspaceLogo} alt="logo" width={50} height={50} />
+         <h1 className="text-xl sm:text-2xl font-semibold text-white">DevSpace</h1>
+       </div>
 
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-4">

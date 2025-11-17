@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiFilePlus } from "react-icons/fi";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import {
@@ -35,6 +35,7 @@ const extensionToLanguageMap: Record<string, string> = {
 interface SaveUploadFileProps {
   setCode: (code: string) => void;
   currentCode: string;
+  curLanguage: string;
   setCurLanguage: (lang: string) => void;
   setIsFileUpload: (isFileUpload: boolean) => void;
 }
@@ -42,6 +43,7 @@ interface SaveUploadFileProps {
 export function SaveUploadFile({
   setCode,
   currentCode,
+  curLanguage,
   setCurLanguage,
   setIsFileUpload,
 }: SaveUploadFileProps) {
@@ -49,7 +51,10 @@ export function SaveUploadFile({
 
   // For filename input modal visibility and value
   const [showSavePrompt, setShowSavePrompt] = useState(false);
-  const [filename, setFilename] = useState("code.txt");
+
+  const [filename, setFilename] = useState(
+    `main.${getExtensionByLanguage(curLanguage)}`
+  );
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -104,9 +109,19 @@ export function SaveUploadFile({
     setShowSavePrompt(false);
   };
 
+  function getExtensionByLanguage(lang: string) {
+    return Object.entries(extensionToLanguageMap).find(
+      ([ext, language]) => language === lang
+    )?.[0];
+  }
+
   const handleCancelSave = () => {
     setShowSavePrompt(false);
   };
+
+  useEffect(() => {
+    setFilename(`main.${getExtensionByLanguage(curLanguage)}`);
+  }, [curLanguage]);
 
   return (
     <>
@@ -121,7 +136,7 @@ export function SaveUploadFile({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="text-black">
-            File <IoIosArrowDown  className="ml-2" />
+            File <IoIosArrowDown className="ml-2" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">

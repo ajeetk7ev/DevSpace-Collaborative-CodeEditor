@@ -11,13 +11,12 @@ import { languageMap } from "@/utils/data";
 import { SaveUploadFile } from "./header/save-upload-file";
 import toast from "react-hot-toast";
 
-
 type User = {
   id: string;
   fullname: string | null;
   email: string | null;
   imageUrl: string | null;
-}
+};
 
 export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
   const [curLanguage, setCurLanguage] = useState("javascript");
@@ -58,13 +57,20 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
       }
 
       if (message.type === "user-joined") {
-        toast.success(`${(message.payload.user.fullname === user.fullname && message.payload.user.id === user.id) ? "You" : message.payload.user.fullname} joined the room`);
+        toast.success(
+          `${
+            message.payload.user.fullname === user.fullname &&
+            message.payload.user.id === user.id
+              ? "You"
+              : message.payload.user.fullname
+          } joined the room`
+        );
         setTotalUsersInRoom(parseInt(message.payload.totalUsers));
       }
 
       if (message.type === "user-left") {
-       setTotalUsersInRoom(parseInt(message.payload.totalUsers));
-       toast.success(`${message.payload.user.fullname} left the room`);
+        setTotalUsersInRoom(parseInt(message.payload.totalUsers));
+        toast.success(`${message.payload.user.fullname} left the room`);
       }
     };
 
@@ -78,7 +84,6 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
     if (value === undefined) return;
 
     setCode(value);
-
 
     if (ignoreIncomingRef.current) {
       ignoreIncomingRef.current = false;
@@ -105,7 +110,6 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
     }
   }, [curLanguage]);
 
- 
   const runCode = async () => {
     setLoading(true);
     setOutput("");
@@ -131,23 +135,23 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
   };
 
   const handleLeaveRoom = () => {
-  if (wsref.current && wsref.current.readyState === WebSocket.OPEN) {
-    wsref.current.send(
-      JSON.stringify({
-        type: "leave",
-        payload: { room, user },
-      })
-    );
-    wsref.current.close();
-  }
+    if (wsref.current && wsref.current.readyState === WebSocket.OPEN) {
+      wsref.current.send(
+        JSON.stringify({
+          type: "leave",
+          payload: { room, user },
+        })
+      );
+      wsref.current.close();
+    }
 
-  toast.success("You left the room");
-  // redirect if needed
-  window.location.href = "/"; // or dashboard
-};
+    toast.success("You left the room");
+    // redirect if needed
+    window.location.href = "/"; // or dashboard
+  };
 
   return (
-    <div className="h-screen w-screen">
+    <div className="h-screen w-screen overflow-x-hidden overflow-y-hidden">
       <ShareNavbar
         languages={languages}
         setCurLanguage={setCurLanguage}
@@ -187,37 +191,48 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
 
         <div className="bg-gray-800 text-white p-4 space-y-4 overflow-y-auto h-full">
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-semibold">Input (stdin)</h2>
             <SaveUploadFile
               currentCode={code}
               setCode={setCode}
+              curLanguage={curLanguage}
               setCurLanguage={setCurLanguage}
               setIsFileUpload={setIsFileUpload}
             />
           </div>
-          <textarea
-            value={stdin}
-            onChange={(e) => setStdin(e.target.value)}
-            className="w-full h-28 p-2 text-black rounded bg-gray-100"
-            placeholder="Enter input if required"
-          />
-
-          <div className="flex justify-between">
-            <Button
-              className="bg-red-600 hover:bg-red-700"
-              onClick={() => {
-                setOutput("");
-                setTime("");
-                setMemory("");
-              }}
-            >
-              Clear
-            </Button>
-            {loading && <span className="text-green-300">Running...</span>}
+          <div>
+            <h2 className="text-xl font-semibold">STDIN</h2>
+            <textarea
+              value={stdin}
+              onChange={(e) => setStdin(e.target.value)}
+              className="w-full resize-none pl-2 pt-2 h-32 text-gray-500 rounded bg-gray-100"
+              placeholder="Your Input Goes Here..."
+            />
           </div>
 
-          <h2 className="text-xl font-semibold pt-2">Output</h2>
-          <pre className="min-h-40 bg-black p-2 rounded overflow-auto">{output}</pre>
+          <div>
+            <h2 className="text-xl font-semibold pt-2">STDOUT</h2>
+            <pre className="min-h-40 max-h-60  overflow-y-auto  text-white bg-gray-100 p-2 rounded overflow-auto">
+              {!output && (
+                <p className="text-gray-500">
+                  Your Output Will Be Displayed Here ...
+                </p>
+              )}
+
+              <p className="text-gray-700 whitespace-pre-wrap"> {output}</p>
+            </pre>
+            <div className="flex justify-between mt-5">
+              <Button
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => {
+                  setOutput("");
+                  setTime("");
+                  setMemory("");
+                }}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
 
           {time && (
             <div className="text-sm mt-2">
@@ -230,5 +245,3 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
     </div>
   );
 }
-
-

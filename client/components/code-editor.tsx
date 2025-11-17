@@ -21,8 +21,8 @@ export function CodeEditor() {
   const [isFileUpload, setIsFileUpload] = useState(false);
 
   useEffect(() => {
-    if(!isFileUpload){
-        setCode(defaultCodes[curLanguage]);
+    if (!isFileUpload) {
+      setCode(defaultCodes[curLanguage]);
     }
   }, [curLanguage]);
 
@@ -64,7 +64,7 @@ export function CodeEditor() {
       />
       <Split
         className="flex h-[95vh]"
-        sizes={[75, 25]}
+        sizes={[70, 30]}
         minSize={250}
         direction="horizontal"
         gutterSize={8}
@@ -88,40 +88,48 @@ export function CodeEditor() {
 
         <div className="bg-gray-800 text-white p-4 space-y-4 overflow-y-auto h-full">
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-semibold">Input (stdin)</h2>
             <SaveUploadFile
               currentCode={code}
               setCode={setCode}
+              curLanguage={curLanguage}
               setCurLanguage={setCurLanguage}
               setIsFileUpload={setIsFileUpload}
             />
           </div>
-          <textarea
-            value={stdin}
-            onChange={(e) => setStdin(e.target.value)}
-            className="w-full h-28 p-2 text-black rounded bg-gray-100"
-            placeholder="Enter input if required"
-          />
-
-          <div className="flex justify-between">
-            <Button
-              className="bg-red-600 hover:bg-red-700"
-              onClick={() => {
-                setOutput("");
-                setTime("");
-                setMemory("");
-              }}
-            >
-              Clear
-            </Button>
-            {loading && <span className="text-green-300">Running...</span>}
+          <div>
+            <h2 className="text-xl font-semibold">STDIN</h2>
+            <textarea
+              value={stdin}
+              onChange={(e) => setStdin(e.target.value)}
+              className="w-full resize-none pl-2 pt-2 h-32 text-gray-500 rounded bg-gray-100"
+              placeholder="Your Input Goes Here..."
+            />
           </div>
 
-          <h2 className="text-xl font-semibold pt-2">Output</h2>
-          <pre className="min-h-40 text-white bg-black p-2 rounded overflow-auto">
-        
-            {output}
-          </pre>
+          <div>
+            <h2 className="text-xl font-semibold pt-2">STDOUT</h2>
+            <pre className="min-h-40 max-h-60  overflow-y-auto  text-white bg-gray-100 p-2 rounded overflow-auto">
+              {!output && (
+                <p className="text-gray-500">
+                  Your Output Will Be Displayed Here ...
+                </p>
+              )}
+
+              <p className="text-gray-700 whitespace-pre-wrap"> {output}</p>
+            </pre>
+            <div className="flex justify-between mt-5">
+              <Button
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => {
+                  setOutput("");
+                  setTime("");
+                  setMemory("");
+                }}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
 
           {time && (
             <div className="text-sm mt-2">
