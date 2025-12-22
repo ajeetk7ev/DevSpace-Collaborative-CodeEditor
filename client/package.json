@@ -27,7 +27,7 @@
     "express": "^5.1.0",
     "ioredis": "^5.8.2",
     "lucide-react": "^0.511.0",
-    "next": "^15.3.2",
+    "next": "^15.5.9",
     "prisma": "^6.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
