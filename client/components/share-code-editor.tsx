@@ -115,6 +115,7 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
     setOutput("");
     setTime("");
     setMemory("");
+    
 
     try {
       const res = await axios.post("/api/execute", {
@@ -124,11 +125,22 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
       });
 
       const data = res.data;
-      setOutput(data.stdout || data.stderr || "No output");
-      setTime(data.time + "s");
-      setMemory(data.memory + " KB");
+      
+      // Display output, stderr, or compile output
+      if (data.compile_output) {
+        setOutput(data.compile_output);
+      } else if (data.stderr) {
+        setOutput(data.stderr);
+      } else {
+        setOutput(data.stdout || "No output");
+      }
+      
+      
+      setTime(data.time ? data.time + "s" : "");
+      setMemory(data.memory ? data.memory + " KB" : "");
     } catch (err: any) {
       setOutput("Error: " + (err.response?.data?.error || err.message));
+      
     } finally {
       setLoading(false);
     }
@@ -233,6 +245,8 @@ export function ShareCodeEditor({ room, user }: { room: string; user: User }) {
               </Button>
             </div>
           </div>
+
+    
 
           {time && (
             <div className="text-sm mt-2">

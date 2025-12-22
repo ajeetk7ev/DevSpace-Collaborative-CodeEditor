@@ -1,68 +1,77 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-
-const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY!;
-const RAPIDAPI_HOST = "judge0-ce.p.rapidapi.com";
+import { QueueEvents } from "bullmq";
+import { redis } from "@/lib/redis";
+import { runQueue } from "@/lib/run.queue";
+import { languageMap } from "@/utils/data";
+// Import worker to ensure it's initialized
+import "@/lib/run.worker";
 
 export async function POST(req: NextRequest) {
-  const { source_code, language_id, stdin } = await req.json();
-
   try {
-    const response = await axios.post(
-      `https://${RAPIDAPI_HOST}/submissions`,
+    const { source_code, language_id, stdin } = await req.json();
+
+    if (!source_code || !language_id) {
+      return NextResponse.json(
+        { error: "source_code and language_id are required" },
+        { status: 400 }
+      );
+    }
+
+    // Find language name from language_id
+    const language = Object.keys(languageMap).find(
+      (key) => languageMap[key] === language_id
+    );
+
+    if (!language) {
+      return NextResponse.json(
+        { error: "Unsupported language" },
+        { status: 400 }
+      );
+    }
+
+    // Add job to queue
+    const job = await runQueue.add(
+      "code-run",
       {
-        source_code,
-        language_id,
-        stdin,
+        code: source_code,
+        language: language,
+        stdin: stdin || "",
       },
       {
-        headers: {
-          "Content-Type": "application/json",
-          "X-RapidAPI-Key": RAPIDAPI_KEY,
-          "X-RapidAPI-Host": RAPIDAPI_HOST,
-        },
-        params: {
-          base64_encoded: "false",
-          wait: "true", // wait for execution
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 2000,
         },
       }
     );
 
-    return NextResponse.json(response.data);
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error?.response?.data || error.message },
-      { status: 500 }
+     // Wait for job to complete (with timeout)
+    const queueEvents = new QueueEvents("code-run", { connection: redis });
+
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Job timeout")), 30000)
     );
-  }
-}
+    
+    const result = await Promise.race([
+      job.waitUntilFinished(queueEvents),
+      timeoutPromise
+    ]) as any;
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const token = searchParams.get("token");
-
-  if (!token) {
-    return NextResponse.json({ error: "Token is required" }, { status: 400 });
-  }
-
-  try {
-    const response = await axios.get(
-      `https://${RAPIDAPI_HOST}/submissions/${token}`,
-      {
-        headers: {
-          "X-RapidAPI-Key": RAPIDAPI_KEY,
-          "X-RapidAPI-Host": RAPIDAPI_HOST,
-        },
-        params: {
-          base64_encoded: "false",
-        },
-      }
-    );
-
-    return NextResponse.json(response.data);
+      return NextResponse.json({
+        stdout: result.stdout,
+        stderr: result.stderr,
+        compile_output: result.compileOutput,
+        verdict: result.verdict,
+        time: result.runtime ? (result.runtime / 1000).toFixed(3) : null,
+        memory: result.memory,
+        exit_code: result.exitCode,
+      });
+   
   } catch (error: any) {
+    console.error("Error executing code:", error);
     return NextResponse.json(
-      { error: error?.response?.data || error.message },
+      { error: error?.message || "Failed to execute code" },
       { status: 500 }
     );
   }
