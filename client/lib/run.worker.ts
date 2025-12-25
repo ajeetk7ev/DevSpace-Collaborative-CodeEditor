@@ -47,7 +47,7 @@ export const runWorker = new Worker<RunJobData, RunJobResult>(
   },
   {
     connection: redis,
-    concurrency: 5, // Process up to 5 jobs concurrently
+    concurrency: 1, 
   }
 );
 

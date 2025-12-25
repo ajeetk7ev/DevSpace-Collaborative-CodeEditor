@@ -44,8 +44,8 @@ const getHeaders = () => {
   };
 
   if (JUDGE0_RAPIDAPI_KEY && JUDGE0_RAPIDAPI_HOST) {
-    headers["X-RapidAPI-Key"] = JUDGE0_RAPIDAPI_KEY;
-    headers["X-RapidAPI-Host"] = JUDGE0_RAPIDAPI_HOST;
+    headers["x-rapidapi-key"] = JUDGE0_RAPIDAPI_KEY;
+    headers["x-rapidapi-host"] = JUDGE0_RAPIDAPI_HOST;
   }
 
   return headers;
