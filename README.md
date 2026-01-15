@@ -1,4 +1,5 @@
-# 🚀 DevSpace - Real-Time Collaborative Code Editor
+# 🚀 DevSpace - Real-Time
+Collaborative Code Editor
 
 <div align="center">
 
